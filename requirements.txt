@@ -9,3 +9,4 @@ sniffio==1.2.0
 sortedcontainers==2.4.0
 uvicorn==0.18.3
 xgboost==1.6.2
+pandas
