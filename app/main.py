@@ -117,7 +117,7 @@ app = FastAPI()
 
 
 model = XGBRegressor()
-model.load_model("model.txt")
+model.load_model("app/model.txt")
 
 @app.get('/')
 
