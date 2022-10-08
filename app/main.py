@@ -6,6 +6,7 @@ from fastapi import FastAPI
 from xgboost import XGBRegressor
 from pydantic import BaseModel,Field
 import pandas as pd
+from fastapi.middleware.cors import CORSMiddleware
 
 feature_names = {'feature_1': 'מיתווה או תבנית (פורמט)',
  'feature_2': 'שמירת סדר הקודקס: שומרי  דפים/גיליונות',
@@ -111,8 +112,18 @@ class Codicological_Data(BaseModel):
     feature_49: int =  Field (ge=0, le=1)
     feature_50: int =  Field (ge=0, le=1)
 
+
 app = FastAPI()
 
+origins = ["*"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 
