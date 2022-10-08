@@ -134,7 +134,7 @@ model.load_model("app/model.txt")
 
 def index():
 
-    return {'message': 'This is the homepage of the API '}
+    return {'message': 'API Version 0.1 '}
 
 @app.post('/prediction')
 
