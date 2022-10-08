@@ -112,7 +112,10 @@ class Codicological_Data(BaseModel):
     feature_49: int =  Field (ge=0, le=1)
     feature_50: int =  Field (ge=0, le=1)
 
-
+class Text_Post(BaseModel):
+    text: str
+  
+  
 app = FastAPI()
 
 origins = ["*"]
@@ -148,4 +151,11 @@ def predict_production_year(data: Codicological_Data):
     prediction = model.predict(df)
     print(prediction)
     return {'prediction': str(prediction[0])}
+   
+@app.post('/post')
+
+def predict_production_year(data: Text_Post):
+    received = data
+    
+    return {'prediction': received}
 
