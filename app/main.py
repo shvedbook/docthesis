@@ -5,6 +5,8 @@ import pickle
 from fastapi import FastAPI
 from xgboost import XGBRegressor
 from pydantic import BaseModel,Field
+from fastapi.middleware.cors import CORSMiddleware
+
 import pandas as pd
 
 feature_names = {'feature_1': 'מיתווה או תבנית (פורמט)',
@@ -111,7 +113,21 @@ class Codicological_Data(BaseModel):
     feature_49: int =  Field (ge=0, le=1)
     feature_50: int =  Field (ge=0, le=1)
 
+
+
 app = FastAPI()
+
+origins = [
+"http://localhost",
+"http://localhost:3000",
+]
+app.add_middleware(
+CORSMiddleware,
+allow_origins=origins,
+allow_credentials=True,
+allow_methods=["*"],
+allow_headers=["*"],
+)
 
 
 
