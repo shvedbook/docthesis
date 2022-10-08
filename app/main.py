@@ -131,13 +131,11 @@ model = XGBRegressor()
 model.load_model("app/model.txt")
 
 @app.get('/')
-
 def index():
 
     return {'message': 'API Version 0.1 '}
 
-@app.post('/prediction')
-
+@app.post('/prediction')\
 def predict_production_year(data: Codicological_Data):
     received = data.dict()
     df_dict = {}
@@ -148,4 +146,9 @@ def predict_production_year(data: Codicological_Data):
     prediction = model.predict(df)
     print(prediction)
     return {'prediction': str(prediction[0])}
+   
+@app.post('/send_form')\
+def predict_production_year(data):
+    received = data.dict()
+    return {'prediction': str(received[0])}
 
