@@ -1,5 +1,5 @@
 import uvicorn
-
+import shap
 import pickle
 
 from fastapi import FastAPI
