@@ -1,5 +1,5 @@
 import uvicorn
-import shap
+
 import pickle
 
 from fastapi import FastAPI
@@ -152,14 +152,6 @@ def predict_production_year(data: Codicological_Data):
     df = (pd.DataFrame.from_dict(df_dict)).astype(float)
     prediction = model.predict(df)
     print(prediction)
-    
-    columns_for_showing = []
-    for column in df.columns:
-      new_col = column[::-1]
-      columns_for_showing.append(new_col)
-
-    shap_values = explainer_xgb.shap_values(df)
-    #shap.force_plot(explainer_xgb.expected_value, shap_values ,feature_names=columns_for_showing, show=False, matplotlib=True).savefig('shap.pdf')
     
     return {'prediction': str(prediction[0])}
    
