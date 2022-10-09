@@ -131,15 +131,13 @@ app.add_middleware(
 
 
 model = XGBRegressor()
-
 model.load_model("app/model.txt")
-explainer_xgb = pickle.load(open("app/explainer.pkl", "rb"))
 
 @app.get('/')
 
 def index():
 
-    return {'message': 'API Version 0.2 '}
+    return {'message': 'API Version 0.1 '}
 
 @app.post('/prediction')
 
@@ -152,7 +150,6 @@ def predict_production_year(data: Codicological_Data):
     df = (pd.DataFrame.from_dict(df_dict)).astype(float)
     prediction = model.predict(df)
     print(prediction)
-    
     return {'prediction': str(prediction[0])}
    
 @app.post('/post')
@@ -161,4 +158,3 @@ def predict_production_year(data: Text_Post):
     received = data
     
     return {'prediction': received}
-
