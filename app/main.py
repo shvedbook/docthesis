@@ -139,7 +139,7 @@ explainer_xgb = pickle.load(open("app/explainer.pkl", "rb"))
 
 def index():
 
-    return {'message': 'API Version 0.1 '}
+    return {'message': 'API Version 0.2 '}
 
 @app.post('/prediction')
 
@@ -159,8 +159,7 @@ def predict_production_year(data: Codicological_Data):
       columns_for_showing.append(new_col)
 
     shap_values = explainer_xgb.shap_values(df)
-    shap.initjs()
-    shap.force_plot(explainer_xgb.expected_value, shap_values ,feature_names=columns_for_showing, show=False, matplotlib=True).savefig('shap.pdf')
+    #shap.force_plot(explainer_xgb.expected_value, shap_values ,feature_names=columns_for_showing, show=False, matplotlib=True).savefig('shap.pdf')
     
     return {'prediction': str(prediction[0])}
    
