@@ -8,6 +8,10 @@ from pydantic import BaseModel,Field
 import pandas as pd
 from fastapi.middleware.cors import CORSMiddleware
 
+from io import BytesIO
+from starlette.responses import StreamingResponse
+
+
 feature_names = {'feature_1': 'מיתווה או תבנית (פורמט)',
  'feature_2': 'שמירת סדר הקודקס: שומרי  דפים/גיליונות',
  'feature_3': 'סימני מים:- יש-',
@@ -132,12 +136,13 @@ app.add_middleware(
 
 model = XGBRegressor()
 model.load_model("app/model.txt")
+explainer_xgb = pickle.load(open("app/explainer.pkl", "rb"))
 
 @app.get('/')
 
 def index():
 
-    return {'message': 'API Version 0.1 '}
+    return {'message': 'API Version 0.2 '}
 
 @app.post('/prediction')
 
@@ -152,9 +157,26 @@ def predict_production_year(data: Codicological_Data):
     print(prediction)
     return {'prediction': str(prediction[0])}
    
-@app.post('/post')
+@app.post('/getshap')
 
-def predict_production_year(data: Text_Post):
-    received = data
+def predict_production_year(data: Codicological_Data):
+    received = data.dict()
+    df_dict = {}
+
+    for k in received:
+        df_dict[feature_names[k]] = list(str(received[k]))
+    df = (pd.DataFrame.from_dict(df_dict)).astype(float)
+    prediction = model.predict(df)
+    print(prediction)
     
-    return {'prediction': received}
+    columns_for_showing = []
+    for column in df.columns:
+      new_col = column[::-1]
+      columns_for_showing.append(new_col)
+
+    shap_values = explainer_xgb.shap_values(df)
+    buf = BytesIO()
+    shap.force_plot(explainer_xgb.expected_value, shap_values ,feature_names=columns_for_showing, show=False, matplotlib=True).savefig(buf, format="png")
+    buf.seek(0)
+    
+    return StreamingResponse(buf, media_type="image/png")
