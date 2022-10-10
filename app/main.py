@@ -142,7 +142,7 @@ explainer_xgb = pickle.load(open("app/explainer.pkl", "rb"))
 
 def index():
 
-    return {'message': 'API Version 0.1 '}
+    return {'message': 'API Version 0.2 '}
 
 @app.post('/prediction')
 
